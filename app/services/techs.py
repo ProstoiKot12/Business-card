@@ -37,6 +37,8 @@ TECH_KEYS = {
     "Yandex Maps": "Yandex Maps",
     "Yandex GPT": "Yandex GPT",
     "Google Calendar": "Google Calendar",
+    "Jinja2": "Jinja2",
+    "Alembic": "Alembic",
 }
 
 # Icon file extensions: most are .svg, a few are .png (official logo)

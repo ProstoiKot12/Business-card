@@ -876,6 +876,36 @@ API Google Календаря для управления расписанием
 ## tech.Google Calendar.url
 https://developers.google.com/calendar/api
 
+## tech.Jinja2.name
+Jinja2
+
+## tech.Jinja2.emoji
+🏛
+
+## tech.Jinja2.desc
+Шаблонизатор для Python — генерация HTML, конфигов и текстов из шаблонов.
+
+## tech.Jinja2.reason
+Рендерю Web App страницы с Jinja2: компоненты, макросы, наследование шаблонов.
+
+## tech.Jinja2.url
+https://jinja.palletsprojects.com/
+
+## tech.Alembic.name
+Alembic
+
+## tech.Alembic.emoji
+⚗
+
+## tech.Alembic.desc
+Миграции схемы базы данных для SQLAlchemy — версионирование и rollback.
+
+## tech.Alembic.reason
+Управляю эволюцией схемы БД через миграции — от создания таблиц до rename столбцов.
+
+## tech.Alembic.url
+https://alembic.sqlalchemy.org/
+
 ## tech.default.emoji
 ⚙️
 

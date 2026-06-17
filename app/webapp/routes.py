@@ -116,6 +116,8 @@ async def cases(request: Request, session: AsyncSession = Depends(get_session)):
         "YooKassa": "/static/icons/tech/yookassa.png",
         "T-Bank": "/static/icons/tech/tbank.svg",
         "APScheduler": "/static/icons/tech/apscheduler.svg",
+        "Jinja2": "/static/icons/tech/jinja2.svg",
+        "Alembic": "/static/icons/tech/alembic.svg",
     }
     return render_htmx_or_full(
         request,

@@ -56,7 +56,7 @@ def upgrade() -> None:
             {
                 "order": max_order,
                 "emoji": "📦",
-                "title": "Операционная платформа для склада и логистики",
+                "title": "Upseller",
                 "type": "Бот-платформа",
                 "task": "Построить единую систему управления складом: от приёмки до отгрузки, с контролем менеджеров, SLA по клиентским чатам и автоматическими отчётами.",
                 "context": "для логистической компании",
@@ -68,7 +68,7 @@ def upgrade() -> None:
                     "Автоматические отчёты и квартальные опросы клиентов"
                 ),
                 "outcome": "Менеджеры видят задачи в Telegram, руководство получает ежедневную аналитику автоматически.",
-                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","APScheduler","Google Sheets API","Trello API"]',
+                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","APScheduler","Google Sheets API","Trello API", "Git"]',
                 "media_group": "[]",
                 "bot_link": None,
                 "extra_link": "https://github.com/ProstoiKot12/Upseller-Bot",
@@ -82,7 +82,7 @@ def upgrade() -> None:
             {
                 "order": max_order,
                 "emoji": "🔧",
-                "title": "Полный цикл заказов для сервиса монтажа",
+                "title": "Montazhp",
                 "type": "Бот-сервис",
                 "task": "Автоматизировать весь цикл, от заявки до выезда мастера и оплаты: расчёт стоимости, бронирование, оплата, геолокация и CRM.",
                 "context": "для сервиса монтажа в СПб",
@@ -94,9 +94,9 @@ def upgrade() -> None:
                     "Админ-дашборд, рассылки и ежедневная отчётность"
                 ),
                 "outcome": "За полтора года в production: 1700+ заказов. Клиент оформляет заявку и оплачивает сам, мастер ведёт работу через Telegram.",
-                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","Docker","AmoCRM API","YooKassa","T-Bank","Yandex Maps","Yandex GPT","Google Calendar"]',
+                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","Docker","AmoCRM API","YooKassa","T-Bank","Yandex Maps","Yandex GPT","Google Calendar", "Git"]',
                 "media_group": "[]",
-                "bot_link": None,
+                "bot_link": "https://t.me/montazhpbot",
                 "extra_link": "https://github.com/ProstoiKot12/MontazhP",
                 "is_visible": True,
             }
