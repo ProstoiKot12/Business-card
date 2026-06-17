@@ -27,17 +27,13 @@ templates = Jinja2Templates(directory=templates_dir)
 def render_htmx_or_full(request: Request, template_name: str, context: dict, status_code: int = 200):
     if request.headers.get("HX-Request") == "true":
         return templates.TemplateResponse(
-            name=template_name,
-            context=context,
-            status_code=status_code
+            request, template_name, context, status_code=status_code
         )
 
     # If full page load, wrap in base.html
     context["main_content_template"] = template_name
     return templates.TemplateResponse(
-        name="base.html",
-        context=context,
-        status_code=status_code
+        request, "base.html", context, status_code=status_code
     )
 
 
