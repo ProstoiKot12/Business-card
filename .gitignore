@@ -1,0 +1,51 @@
+# Environment
+.env
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing & linting
+.pytest_cache/
+.pytest_tmp/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Build & packages
+*.egg-info/
+*.egg
+dist/
+build/
+node_modules/
+
+# Docker
+postgres_data/
+
+# Dev state (caches, stamps)
+.dev-state/
+.worktrees/
+
+# AI tools & agents
+.code-review-graph/
+.gemini/
+.claude/
+.qwen/
+AGENTS.md
+CONTEXT.md
+.mcp.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log

@@ -1,0 +1,94 @@
+<section class="screen animation-fade-in">
+    <header class="card contacts-hero">
+        <p class="eyebrow">Contact</p>
+        <h1>Контакты</h1>
+        <p class="lead">Быстрее всего отвечаю в телеграмме</p>
+        <div class="contacts-info-cards">
+            <div class="info-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span class="info-label">Часовой пояс</span>
+                <span class="info-value">МСК+2</span>
+            </div>
+            <div class="info-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <span class="info-label">Ответ</span>
+                <span class="info-value">30–60 мин</span>
+            </div>
+            <div class="info-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span class="info-label">Статус</span>
+                <span class="info-value"><span class="status-dot"></span>открыт</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="contacts-grid">
+        {% if settings.owner_telegram_url %}
+            <a href="{{ settings.owner_telegram_url }}" class="contact-block contact-telegram" target="_blank" rel="noopener">
+                <div class="contact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394a.759.759 0 01-.586.274l.21-3.035 5.524-4.99c.24-.21-.054-.33-.373-.12l-6.83 4.3-2.94-.92c-.64-.2-.65-.64.14-.95l11.48-4.43c.53-.2 1 .13.83.94z"/>
+                    </svg>
+                </div>
+                <div class="contact-content">
+                    <span class="contact-title">Telegram</span>
+                    <span class="contact-desc">Быстрый ответ</span>
+                </div>
+                <div class="contact-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        {% endif %}
+
+        {% if settings.owner_max_url %}
+            <a href="{{ settings.owner_max_url }}" class="contact-block contact-max" target="_blank" rel="noopener">
+                <div class="contact-icon-wrapper">
+                    <svg viewBox="0 0 720 720" fill="currentColor">
+                        <path d="M350.4,9.6C141.8,20.5,4.1,184.1,12.8,390.4c3.8,90.3,40.1,168,48.7,253.7,2.2,22.2-4.2,49.6,21.4,59.3,31.5,11.9,79.8-8.1,106.2-26.4,9-6.1,17.6-13.2,24.2-22,27.3,18.1,53.2,35.6,85.7,43.4,143.1,34.3,299.9-44.2,369.6-170.3C799.6,291.2,622.5-4.6,350.4,9.6h0ZM269.4,504c-11.3,8.8-22.2,20.8-34.7,27.7-18.1,9.7-23.7-.4-30.5-16.4-21.4-50.9-24-137.6-11.5-190.9,16.8-72.5,72.9-136.3,150-143.1,78-6.9,150.4,32.7,183.1,104.2,72.4,159.1-112.9,316.2-256.4,218.6h0Z"/>
+                    </svg>
+                </div>
+                <div class="contact-content">
+                    <span class="contact-title">Max</span>
+                    <span class="contact-desc">Отвечаю дольше</span>
+                </div>
+                <div class="contact-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        {% endif %}
+
+        {% if settings.owner_github_url %}
+            <a href="{{ settings.owner_github_url }}" class="contact-block contact-github" target="_blank" rel="noopener">
+                <div class="contact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </div>
+                <div class="contact-content">
+                    <span class="contact-title">GitHub</span>
+                    <span class="contact-desc">Моё портфолио</span>
+                </div>
+                <div class="contact-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        {% endif %}
+
+        {% if settings.owner_phone %}
+            <a href="tel:{{ settings.owner_phone }}" class="contact-block contact-phone">
+                <div class="contact-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.28-.28.67-.36 1.02-.25 1.12.37 2.32.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                    </svg>
+                </div>
+                <div class="contact-content">
+                    <span class="contact-title">Телефон</span>
+                    <span class="contact-desc">Прямой звонок</span>
+                </div>
+                <div class="contact-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        {% endif %}
+    </div>
+</section>

@@ -1,0 +1,56 @@
+<section class="screen animation-fade-in">
+    <div class="error-page">
+        <span class="error-emoji" aria-hidden="true">
+            {% if error_type == 'not_found' %}🔮
+            {% elif error_type == 'no_connection' %}📡
+            {% elif error_type == 'server_error' %}🛠️
+            {% else %}🌀
+            {% endif %}
+        </span>
+
+        <h1 class="error-title">
+            {% if error_type == 'not_found' %}
+                Страница не найдена
+            {% elif error_type == 'no_connection' %}
+                Нет соединения
+            {% elif error_type == 'server_error' %}
+                Что-то сломалось
+            {% else %}
+                Непредвиденная ошибка
+            {% endif %}
+        </h1>
+
+        <p class="error-description">
+            {% if error_type == 'not_found' %}
+                Этой страницы не существует. Возможно, она была перемещена или вы перешли по старой ссылке.
+            {% elif error_type == 'no_connection' %}
+                Проверьте подключение к интернету. Сервер недоступен или соединение потеряно.
+            {% elif error_type == 'server_error' %}
+                На сервере произошла ошибка. Мы уже работаем над её устранением.
+            {% else %}
+                Что-то пошло не так. Попробуйте обновить страницу или вернуться на главную.
+            {% endif %}
+        </p>
+
+        <div class="error-actions">
+            {% if error_type == 'no_connection' or error_type == 'server_error' %}
+                <button class="btn" onclick="window.loadFragment(window.location.pathname, false)">
+                    Попробовать снова
+                </button>
+            {% endif %}
+            <a class="btn {% if error_type == 'not_found' %}btn-accent{% else %}btn-secondary{% endif %}"
+               href="/about"
+               onclick="event.preventDefault(); window.loadFragment('/about')">
+                На главную
+            </a>
+        </div>
+
+        <div class="error-code">
+            {% if error_type == 'not_found' %}404
+            {% elif error_type == 'no_connection' %}NET
+            {% elif error_type == 'server_error' %}500
+            {% else %}ERR
+            {% endif %}
+        </div>
+    </div>
+</section>

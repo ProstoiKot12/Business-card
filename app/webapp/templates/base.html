@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#2b2b29">
+    <title>Ярослав Гаврилов — Backend Developer</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/style.css?v=28">
+</head>
+<body>
+    <div id="app" class="app-shell">
+        <main id="main-content" class="content-container" aria-live="polite">
+            {% if main_content_template %}
+                {% include main_content_template %}
+            {% endif %}
+        </main>
+
+        <nav class="bottom-nav" aria-label="Основная навигация">
+            <a href="/about"
+               class="nav-item {% if active_tab == 'about' %}active{% endif %}"
+               data-route="/about"
+               aria-label="Профиль">
+                <span class="nav-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg></span>
+                <span class="nav-label">Профиль</span>
+            </a>
+            <a href="/cases"
+               class="nav-item {% if active_tab == 'cases' %}active{% endif %}"
+               data-route="/cases"
+               aria-label="Кейсы">
+                <span class="nav-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                <span class="nav-label">Кейсы</span>
+            </a>
+            <a href="/calculator"
+               class="nav-item {% if active_tab == 'calculator' %}active{% endif %}"
+               data-route="/calculator"
+               aria-label="Расчёт">
+                <span class="nav-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>
+                <span class="nav-label">Расчёт</span>
+            </a>
+            <a href="/faq"
+               class="nav-item {% if active_tab == 'faq' %}active{% endif %}"
+               data-route="/faq"
+               aria-label="FAQ">
+                <span class="nav-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2.5-2.5 4"/><circle cx="12" cy="17.5" r="1"/></svg></span>
+                <span class="nav-label">FAQ</span>
+            </a>
+            <a href="/contacts"
+               class="nav-item {% if active_tab == 'contacts' %}active{% endif %}"
+               data-route="/contacts"
+               aria-label="Контакты">
+                <span class="nav-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l8.37 5.58a3 3 0 0 0 3.26 0L22 7"/></svg></span>
+                <span class="nav-label">Контакт</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        window.setActiveRoute = function(path) {
+            const normalizedPath = path === "/" ? "/about" : path;
+            document.querySelectorAll(".nav-item").forEach((item) => {
+                item.classList.toggle("active", item.dataset.route === normalizedPath);
+                item.classList.remove("loading");
+            });
+        };
+
+        window.executeInlineScripts = function(container) {
+            container.querySelectorAll("script").forEach((script) => {
+                const replacement = document.createElement("script");
+                replacement.textContent = script.textContent;
+                script.replaceWith(replacement);
+            });
+        };
+
+        window.scrollAppToTop = function() {
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+        };
+
+        window.showError = function(type) {
+            var errors = {
+                "not_found":       { emoji: "🔮", title: "Страница не найдена", desc: "Этой страницы не существует. Возможно, она была перемещена или вы перешли по старой ссылке.", code: "404", mainAction: false },
+                "no_connection":   { emoji: "📡", title: "Нет соединения", desc: "Проверьте подключение к интернету. Сервер недоступен или соединение потеряно.", code: "NET", mainAction: true },
+                "server_error":    { emoji: "🛠️", title: "Что-то сломалось", desc: "На сервере произошла ошибка. Мы уже работаем над её устранением.", code: "500", mainAction: true },
+                "generic":         { emoji: "🌀", title: "Непредвиденная ошибка", desc: "Что-то пошло не так. Попробуйте обновить страницу или вернуться на главную.", code: "ERR", mainAction: false }
+            };
+            var e = errors[type] || errors["generic"];
+            var retryButton = e.mainAction
+                ? '<button class="btn" onclick="window.loadFragment(window.location.pathname, false)">Попробовать снова</button>'
+                : '';
+            var homeClass = type === "not_found" ? "btn-accent" : "btn-secondary";
+            var html = '<section class="screen animation-fade-in">'
+                + '<div class="error-page">'
+                + '<span class="error-emoji" aria-hidden="true">' + e.emoji + '</span>'
+                + '<h1 class="error-title">' + e.title + '</h1>'
+                + '<p class="error-description">' + e.desc + '</p>'
+                + '<div class="error-actions">'
+                + retryButton
+                + '<a class="btn ' + homeClass + '" href="/about" onclick="event.preventDefault(); window.loadFragment(\'/about\')">На главную</a>'
+                + '</div>'
+                + '<div class="error-code">' + e.code + '</div>'
+                + '</div>'
+                + '</section>';
+            var main = document.getElementById("main-content");
+            main.innerHTML = html;
+            main.classList.remove("htmx-requesting");
+        };
+
+        window.showSkeleton = function(path) {
+            var normalizedPath = path === "/" ? "/about" : path;
+            var skeletons = {
+                "/about": '<section class="screen skeleton-loading">'
+                    + '<div style="display:grid;gap:10px;padding:8px 0 4px"><div class="skeleton skeleton-text short"></div><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div>'
+                    + '<div class="skeleton-row"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>'
+                    + '<div style="display:grid;gap:0"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div>'
+                    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text medium"></div></div><div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-block"></div></div></div>'
+                    + '</section>',
+                "/cases": '<section class="screen skeleton-loading">'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text medium"></div></div>'
+                    + '</section>',
+                "/calculator": '<section class="screen skeleton-loading">'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-block"></div></div>'
+                    + '</section>',
+                "/faq": '<section class="screen skeleton-loading">'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-text"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-text medium"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-text"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-text medium"></div></div>'
+                    + '</section>',
+                "/contacts": '<section class="screen skeleton-loading">'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-block"></div><div class="skeleton skeleton-block"></div></div>'
+                    + '<div class="skeleton-card"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-block"></div></div>'
+                    + '</section>'
+            };
+            var main = document.getElementById("main-content");
+            main.innerHTML = skeletons[normalizedPath] || skeletons["/about"];
+            window.executeInlineScripts(main);
+        };
+
+        window.loadFragment = async function(path, pushState = true) {
+            window.showSkeleton(path);
+            const main = document.getElementById("main-content");
+            main.classList.add("htmx-requesting");
+            try {
+                const response = await fetch(path, { headers: { "HX-Request": "true" } });
+                if (!response.ok) {
+                    throw new Error(`Request failed: ${response.status}`);
+                }
+                main.innerHTML = await response.text();
+                window.executeInlineScripts(main);
+                if (pushState) {
+                    window.history.pushState(null, "", path);
+                }
+                window.setActiveRoute(path);
+                window.scrollAppToTop();
+            } catch (error) {
+                main.classList.remove("htmx-requesting");
+                document.querySelectorAll(".nav-item").forEach((item) => item.classList.remove("loading"));
+                if (error.message === "Failed to fetch" || error.name === "TypeError") {
+                    window.showError("no_connection");
+                } else if (error.message.includes("404")) {
+                    window.showError("not_found");
+                } else if (error.message.includes("500") || error.message.includes("502") || error.message.includes("503")) {
+                    window.showError("server_error");
+                } else {
+                    window.showError("generic");
+                }
+            } finally {
+                if (main.classList.contains("htmx-requesting")) {
+                    main.classList.remove("htmx-requesting");
+                }
+            }
+        };
+
+        document.body.addEventListener("pointerdown", function(event) {
+            const navItem = event.target.closest(".nav-item[data-route]");
+            if (navItem) {
+                document.querySelectorAll(".nav-item").forEach((item) => item.classList.remove("loading"));
+                navItem.classList.add("loading");
+            }
+        });
+
+        document.body.addEventListener("click", function(event) {
+            const navItem = event.target.closest(".nav-item[data-route]");
+            if (navItem) {
+                event.preventDefault();
+                window.loadFragment(navItem.dataset.route);
+                return;
+            }
+
+            const hxLink = event.target.closest("a[hx-get]");
+            if (hxLink) {
+                const path = hxLink.getAttribute("hx-get");
+                if (path) {
+                    event.preventDefault();
+                    window.loadFragment(path);
+                    return;
+                }
+            }
+        });
+
+        window.addEventListener("popstate", function() {
+            window.loadFragment(window.location.pathname, false);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<section class="screen animation-fade-in">
+    <header class="card">
+        <p class="eyebrow">Portfolio</p>
+        <h1>Кейсы</h1>
+        <p class="lead">Короткие разборы проектов: контекст, подход и результат. Формат помогает быстро оценить техническую часть и стиль работы.</p>
+    </header>
+
+    {% if not cases %}
+        <article class="empty-state">
+            <span class="empty-icon" aria-hidden="true">▦</span>
+            <h2>Кейсов пока нет</h2>
+            <p>Скоро здесь появятся первые работы.</p>
+        </article>
+    {% else %}
+        <div class="carousel" id="cases-carousel">
+            <div class="carousel-track" id="carousel-track">
+                {% for case in cases %}
+                    <div class="carousel-slide">
+                        <article class="case-card">
+                            <div class="case-heading">
+                                <span class="case-emoji" aria-hidden="true">{{ case.emoji }}</span>
+                                <div>
+                                    <p class="case-type">{{ case.type }}{% if case.context %} &middot; {{ case.context }}{% endif %}</p>
+                                    <h2>{{ case.title }}</h2>
+                                </div>
+                            </div>
+
+                            <p class="case-approach">{{ case.approach }}</p>
+
+                            <p class="case-outcome">{{ case.outcome }}</p>
+
+                            {% if case.stack %}
+                                <div class="tech-collapsible">
+                                    <button class="tech-toggle-btn" type="button" aria-expanded="false">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m16 18-6-6 6-6"/>
+                                        </svg>
+                                        <span>Технологии</span>
+                                        <span class="tech-toggle-count">{{ case.stack|length }}</span>
+                                    </button>
+                                    <div class="tech-grid-cards" aria-label="Стек проекта">
+                                        {% for tech in case.stack %}
+                                            <button class="tech-card" data-tech="{{ tech }}">
+                                                {% set icon_url = icon_slugs.get(tech) %}
+                                                {% if icon_url %}
+                                                    <img class="tech-card-icon" src="{{ icon_url }}" alt="{{ tech }}" onerror="this.style.display='none';this.nextElementSibling.style.display='';">
+                                                    <span class="tech-card-icon-fb" style="display:none">{{ tech[:2] }}</span>
+                                                {% else %}
+                                                    <span class="tech-card-icon-fb">{{ tech[:2] }}</span>
+                                                {% endif %}
+                                                <span class="tech-card-name">{{ tech }}</span>
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if case.bot_link or case.extra_link %}
+                                <div class="button-row">
+                                    {% if case.bot_link %}
+                                        <a href="{{ case.bot_link }}" class="btn btn-telegram" target="_blank" rel="noopener">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.938z"/></svg>
+                                            Открыть
+                                        </a>
+                                    {% endif %}
+                                    {% if case.extra_link %}
+                                        <a href="{{ case.extra_link }}" class="btn btn-github" target="_blank" rel="noopener">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.237 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                                            GitHub
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots">
+            {% for case in cases %}
+                <button class="carousel-dot{% if loop.first %} active{% endif %}" data-index="{{ loop.index0 }}" aria-label="Кейс {{ loop.index }}"></button>
+            {% endfor %}
+        </div>
+    {% endif %}
+</section>
+
+<script>
+    var TECHS = {{ techs_json | safe }};
+</script>
+
+<script>
+    (function() {
+        var track = document.getElementById("carousel-track");
+        var dots = document.querySelectorAll("#carousel-dots .carousel-dot");
+        var realTotal = dots.length;
+        if (realTotal === 0) return;
+
+        /* ── Clone first and last slides for infinite feel ── */
+        var slides = track.querySelectorAll(".carousel-slide");
+        var firstClone = slides[0].cloneNode(true);
+        var lastClone = slides[realTotal - 1].cloneNode(true);
+        track.appendChild(firstClone);
+        track.insertBefore(lastClone, slides[0]);
+
+        var total = realTotal + 2;  // [clone_last, 0, 1, ..., N-1, clone_first]
+        var currentIndex = 1;       // start at the first real slide
+
+        var startX = 0;
+        var lastX = 0;
+        var lastTime = 0;
+        var dragging = false;
+        var trackWidth = 0;
+
+        var carousel = document.getElementById("cases-carousel");
+
+        function syncHeight() {
+            var slide = track.querySelectorAll(".carousel-slide")[currentIndex];
+            if (!slide) return;
+            var card = slide.querySelector(".case-card");
+            if (!card) return;
+            carousel.style.height = card.offsetHeight + "px";
+        }
+
+        function noTransition() { track.style.transition = "none"; }
+        function yesTransition() { track.style.transition = ""; }
+
+        function realIndex(i) {
+            return ((i - 1 + realTotal) % realTotal);
+        }
+
+        function setOffset(percent) {
+            track.style.transform = "translateX(" + percent + "%)";
+        }
+
+        function showDots(index) {
+            var ri = realIndex(index);
+            dots.forEach(function(dot, i) { dot.classList.toggle("active", i === ri); });
+        }
+
+        var cloneFixTimer = null;
+
+        function fixClone() {
+            // silently jump from clone to real slide
+            if (currentIndex === 0) {
+                currentIndex = realTotal;
+                noTransition();
+                syncHeight();
+                setOffset(-currentIndex * 100);
+                track.offsetHeight;
+                yesTransition();
+            } else if (currentIndex === total - 1) {
+                currentIndex = 1;
+                noTransition();
+                syncHeight();
+                setOffset(-currentIndex * 100);
+                track.offsetHeight;
+                yesTransition();
+            }
+        }
+
+        function goTo(index, animate) {
+            if (cloneFixTimer) { clearTimeout(cloneFixTimer); cloneFixTimer = null; }
+            document.querySelectorAll(".tech-collapsible.open").forEach(function(s) {
+                s.classList.remove("open");
+                var btn = s.querySelector(".tech-toggle-btn");
+                if (btn) btn.setAttribute("aria-expanded", "false");
+            });
+            document.querySelectorAll(".tech-card.expanded").forEach(function(c) { c.classList.remove("expanded"); });
+            currentIndex = index;
+            if (animate === false) noTransition();
+            syncHeight();
+            setOffset(-currentIndex * 100);
+            if (animate === false) {
+                track.offsetHeight;
+                yesTransition();
+            }
+            showDots(currentIndex);
+            // fallback: if transitionend doesn't fire, fix clone after 450ms
+            if (animate !== false && (currentIndex === 0 || currentIndex === total - 1)) {
+                cloneFixTimer = setTimeout(fixClone, 450);
+            }
+        }
+
+        function onTransitionEnd() {
+            if (cloneFixTimer) { clearTimeout(cloneFixTimer); cloneFixTimer = null; }
+            fixClone();
+        }
+        track.addEventListener("transitionend", onTransitionEnd);
+
+        function finishDrag(totalDx, velocity) {
+            yesTransition();
+            var projected = (totalDx + velocity * 200) / trackWidth;
+            var threshold = 0.10;
+            if (Math.abs(projected) > threshold) {
+                goTo(projected > 0 ? currentIndex + 1 : currentIndex - 1, true);
+            } else {
+                goTo(currentIndex, true);
+            }
+        }
+
+        dots.forEach(function(dot) {
+            dot.addEventListener("click", function() {
+                goTo(parseInt(dot.dataset.index) + 1, true); // dot 0 → internal index 1
+            });
+        });
+
+        /* ── Touch (mobile) ── */
+
+        var startY = 0;
+        var lastY = 0;
+        var directionLocked = false;
+        var isHorizontal = false;
+
+        track.addEventListener("touchstart", function(e) {
+            if (e.touches.length !== 1) return;
+            if (e.target.closest("button, a, .tech-card, .tech-toggle-btn, input, textarea, select")) return;
+            fixClone();
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            lastX = startX;
+            lastY = startY;
+            lastTime = Date.now();
+            trackWidth = track.offsetWidth;
+            directionLocked = false;
+            isHorizontal = false;
+            dragging = false;
+        }, {passive: true});
+
+        track.addEventListener("touchmove", function(e) {
+            if (dragging === false && directionLocked) return;
+            var x = e.touches[0].clientX;
+            var y = e.touches[0].clientY;
+            var dx = Math.abs(x - startX);
+            var dy = Math.abs(y - startY);
+
+            if (!directionLocked) {
+                if (dx < 8 && dy < 8) return; // dead zone
+                directionLocked = true;
+                isHorizontal = dx > dy;
+                if (isHorizontal) {
+                    dragging = true;
+                    noTransition();
+                    e.preventDefault();
+                }
+                return;
+            }
+
+            if (!isHorizontal) return;
+
+            e.preventDefault();
+            var offset = startX - x;
+            setOffset(-currentIndex * 100 - (offset / trackWidth) * 100);
+            lastX = x;
+            lastY = y;
+            lastTime = Date.now();
+        }, {passive: false});
+
+        track.addEventListener("touchend", function(e) {
+            if (!dragging) return;
+            dragging = false;
+            directionLocked = false;
+            var endX = e.changedTouches[0].clientX;
+            var totalDx = startX - endX;
+            var dt = Date.now() - lastTime;
+            var velocity = dt > 0 ? (lastX - endX) / dt : 0;
+            finishDrag(totalDx, velocity);
+        });
+
+        track.addEventListener("touchcancel", function() {
+            if (!dragging) return;
+            dragging = false;
+            directionLocked = false;
+            yesTransition();
+            goTo(currentIndex, true);
+        });
+
+        /* ── Mouse (desktop) ── */
+
+        var mouseDown = false;
+        var mouseStartX = 0;
+        var mouseLastX = 0;
+        var mouseLastTime = 0;
+
+        track.addEventListener("mousedown", function(e) {
+            if (e.target.closest("button, a, .tech-card, .tech-toggle-btn, input, textarea, select")) return;
+            mouseDown = true;
+            fixClone();
+            mouseStartX = e.clientX;
+            mouseLastX = e.clientX;
+            mouseLastTime = Date.now();
+            trackWidth = track.offsetWidth;
+            track.style.cursor = "grabbing";
+            noTransition();
+            e.preventDefault();
+        });
+
+        track.addEventListener("mousemove", function(e) {
+            if (!mouseDown) return;
+            var dx = mouseStartX - e.clientX;
+            setOffset(-currentIndex * 100 - (dx / trackWidth) * 100);
+            mouseLastX = e.clientX;
+            mouseLastTime = Date.now();
+        });
+
+        track.addEventListener("mouseup", function(e) {
+            if (!mouseDown) return;
+            mouseDown = false;
+            track.style.cursor = "";
+            var totalDx = mouseStartX - e.clientX;
+            var dt = Date.now() - mouseLastTime;
+            var velocity = dt > 0 ? (mouseLastX - e.clientX) / dt : 0;
+            finishDrag(totalDx, velocity);
+        });
+
+        track.addEventListener("mouseleave", function() {
+            if (!mouseDown) return;
+            mouseDown = false;
+            track.style.cursor = "";
+            yesTransition();
+            goTo(currentIndex, true);
+        });
+
+        // initial position
+        noTransition();
+        syncHeight();
+        setOffset(-100);
+        track.offsetHeight;
+        yesTransition();
+        showDots(currentIndex);
+
+        window.addEventListener("resize", function() { syncHeight(); });
+        document.addEventListener("carousel-resize", function() { syncHeight(); });
+    })();
+</script>
+
+<script>
+    (function() {
+        if (typeof TECHS === "undefined") return;
+
+        function closeAllCards() {
+            document.querySelectorAll(".tech-card.expanded").forEach(function(c) {
+                c.classList.remove("expanded");
+            });
+        }
+
+        function closeAllSections() {
+            document.querySelectorAll(".tech-collapsible.open").forEach(function(s) {
+                s.classList.remove("open");
+                var btn = s.querySelector(".tech-toggle-btn");
+                if (btn) btn.setAttribute("aria-expanded", "false");
+            });
+            closeAllCards();
+        }
+
+        function notifyCarousel() {
+            document.dispatchEvent(new CustomEvent("carousel-resize"));
+            // Keep syncing during CSS max-height animation (350ms)
+            var syncInterval = setInterval(function() {
+                document.dispatchEvent(new CustomEvent("carousel-resize"));
+            }, 60);
+            setTimeout(function() { clearInterval(syncInterval); }, 400);
+        }
+
+        document.addEventListener("click", function(e) {
+            // Toggle button clicked
+            var toggleBtn = e.target.closest(".tech-toggle-btn");
+            if (toggleBtn) {
+                e.stopPropagation();
+                var section = toggleBtn.closest(".tech-collapsible");
+                if (!section) return;
+                var wasOpen = section.classList.contains("open");
+                closeAllSections();
+                if (!wasOpen) {
+                    section.classList.add("open");
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                    notifyCarousel();
+                    // Scroll toggle button to top of viewport immediately,
+                    // so expanding tech cards have room below
+                    var scroller = document.scrollingElement || document.documentElement;
+                    var navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 80;
+                    var btnRect = toggleBtn.getBoundingClientRect();
+                    var viewportH = window.innerHeight || document.documentElement.clientHeight;
+                    var scrollTop = scroller.scrollTop || window.pageYOffset || 0;
+                    var desiredTop = viewportH * 0.12;
+                    var scrollTo = scrollTop + btnRect.top - desiredTop;
+                    if (scrollTo > scrollTop) {
+                        scroller.scrollTop = scrollTo;
+                    }
+                    // Re-adjust after CSS animation finishes
+                    setTimeout(function() {
+                        var grid = section.querySelector(".tech-grid-cards");
+                        if (!grid) return;
+                        var rect = grid.getBoundingClientRect();
+                        if (rect.bottom > viewportH - navHeight - 16) {
+                            var st = scroller.scrollTop || window.pageYOffset || 0;
+                            scroller.scrollTop = st + rect.bottom - viewportH + navHeight + 32;
+                        }
+                    }, 380);
+                } else {
+                    notifyCarousel();
+                }
+                return;
+            }
+
+            // Tech card clicked
+            var card = e.target.closest(".tech-card");
+            if (card) {
+                e.stopPropagation();
+
+                if (card.classList.contains("expanded")) {
+                    card.classList.remove("expanded");
+                    notifyCarousel();
+                    return;
+                }
+
+                closeAllCards();
+
+                var body = card.querySelector(".tech-card-body");
+                if (!body) {
+                    var name = card.dataset.tech;
+                    var info = TECHS[name] || {};
+                    body = document.createElement("span");
+                    body.className = "tech-card-body";
+                    body.innerHTML =
+                        '<span class="tech-card-desc">' + (info.desc || "") + '</span>' +
+                        '<span class="tech-card-reason">' + (info.reason ? "Зачем: " + info.reason : "") + '</span>';
+                    card.appendChild(body);
+                }
+
+                card.classList.add("expanded");
+                notifyCarousel();
+                return;
+            }
+
+            // Click outside
+            closeAllSections();
+            notifyCarousel();
+        });
+    })();
+</script>

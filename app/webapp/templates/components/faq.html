@@ -1,0 +1,241 @@
+<section class="screen animation-fade-in">
+    <div class="chat-header">
+        <div class="chat-header-avatar" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>
+        </div>
+        <div class="chat-header-info">
+            <span class="chat-header-name">{{ owner_name }}</span>
+            <span class="chat-header-status"><span class="status-dot" aria-hidden="true"></span>В сети</span>
+        </div>
+    </div>
+    <div class="chat-list" id="faq-chat">
+        <div class="chat-bubble greeting">
+            <span class="chat-text">Привет! Я Ярослав. Спрашивай про что угодно — я отвечу.</span>
+        </div>
+        {% for item in faq_items %}
+            <div class="chat-bubble question is-clickable"
+                 data-question-id="{{ item.id }}"
+                 role="button"
+                 tabindex="0"
+                 aria-expanded="false">
+                <span class="chat-label">Вопрос</span>
+                <span class="chat-text">{{ item.title }}</span>
+            </div>
+        {% endfor %}
+            <div class="chat-bubble question is-clickable"
+                 data-question-id="other"
+                 role="button"
+                 tabindex="0"
+                 aria-expanded="false">
+                <span class="chat-label">Вопрос</span>
+                <span class="chat-text">Другой вопрос</span>
+            </div>
+    </div>
+
+    <script>
+    (function() {
+        var FAQ_DATA = {{ faq_items_json | safe }};
+        var OWNER_TELEGRAM = "{{ owner_telegram_url }}";
+        var STORAGE_KEY = "faq_viewed_v2";
+
+        var chat = document.getElementById("faq-chat");
+        if (!chat) return;
+
+        var viewedSet;
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            viewedSet = raw ? new Set(JSON.parse(raw)) : new Set();
+        } catch (e) {
+            viewedSet = new Set();
+        }
+
+        var activeAnswerEl = null;
+        var activeQuestionEl = null;
+
+        function persistViewed() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(viewedSet)));
+            } catch (e) {}
+        }
+
+        function findAnswerEl(questionId) {
+            return chat.querySelector('.chat-bubble.answer[data-answer-id="' + questionId + '"]');
+        }
+
+        function createAnswerEl(item) {
+            var el = document.createElement("div");
+            el.className = "chat-bubble answer is-collapsed";
+            el.setAttribute("data-answer-id", item.id);
+            el.setAttribute("aria-hidden", "true");
+            el.innerHTML = '<div class="answer-inner"><span class="chat-label">Ответ</span><span class="chat-text"></span></div>';
+            return el;
+        }
+
+        function createOtherAnswerEl() {
+            var el = document.createElement("div");
+            el.className = "chat-bubble answer is-collapsed";
+            el.setAttribute("data-answer-id", "other");
+            el.setAttribute("aria-hidden", "true");
+            el.innerHTML = '<div class="answer-inner"><span class="chat-label">Ответ</span>'
+                + '<span class="chat-text">Напишите мне напрямую — отвечу на любой вопрос.</span>'
+                + '<a href="' + OWNER_TELEGRAM + '" class="btn btn-telegram" target="_blank" rel="noopener" style="margin-top:10px;display:inline-flex;">Написать</a></div>';
+            return el;
+        }
+
+        function collapseAnswer(el) {
+            if (!el || el.classList.contains("is-collapsed")) return;
+            el.classList.add("is-collapsed");
+            el.setAttribute("aria-hidden", "true");
+            var questionEl = chat.querySelector('.chat-bubble.question[data-question-id="' + el.getAttribute("data-answer-id") + '"]');
+            if (questionEl) {
+                questionEl.setAttribute("aria-expanded", "false");
+            }
+            setTimeout(function() {
+                if (el.classList.contains("is-collapsed")) {
+                    el.remove();
+                }
+            }, 400);
+        }
+
+        function doScrollIfNeeded(el) {
+            var elRect = el.getBoundingClientRect();
+            var navBar = document.querySelector(".bottom-nav");
+            var navHeight = navBar ? navBar.offsetHeight : 0;
+            var viewportHeight = window.innerHeight;
+            var visibleBottom = viewportHeight - navHeight;
+
+            if (elRect.bottom > visibleBottom) {
+                var overflow = elRect.bottom - visibleBottom;
+                var topPad = 16;
+                window.scrollTo({
+                    top: window.scrollY + overflow + topPad,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        function scrollIfNeeded(el) {
+            // Wait for the 350ms max-height transition to finish
+            setTimeout(function() { doScrollIfNeeded(el); }, 380);
+        }
+
+
+
+        function revealAnswer(answerEl, questionEl, onRevealed) {
+            // Double rAF ensures browser paints the collapsed state first,
+            // so the transition actually fires when we remove is-collapsed
+            requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                    answerEl.classList.remove("is-collapsed");
+                    answerEl.removeAttribute("aria-hidden");
+                    questionEl.setAttribute("aria-expanded", "true");
+                    if (onRevealed) onRevealed();
+                });
+            });
+        }
+
+        function showAnswer(questionEl, item) {
+            var questionId = item.id;
+            var answerEl = findAnswerEl(questionId);
+
+            // Remove any existing collapsed answer before creating new one
+            if (answerEl && answerEl.classList.contains("is-collapsed")) {
+                answerEl.remove();
+                answerEl = null;
+            }
+
+            if (!answerEl) {
+                answerEl = createAnswerEl(item);
+                questionEl.insertAdjacentElement("afterend", answerEl);
+            }
+
+            revealAnswer(answerEl, questionEl, function() {
+                var textEl = answerEl.querySelector(".chat-text");
+                textEl.innerHTML = item.answer_html;
+                scrollIfNeeded(answerEl);
+            });
+
+            // Track as viewed
+            viewedSet.add(questionId);
+            persistViewed();
+        }
+
+        function showOtherAnswer(questionEl) {
+            var answerEl = findAnswerEl("other");
+
+            // Remove any existing collapsed answer before creating new one
+            if (answerEl && answerEl.classList.contains("is-collapsed")) {
+                answerEl.remove();
+                answerEl = null;
+            }
+
+            if (!answerEl) {
+                answerEl = createOtherAnswerEl();
+                questionEl.insertAdjacentElement("afterend", answerEl);
+            }
+
+            revealAnswer(answerEl, questionEl, function() {
+                var textEl = answerEl.querySelector(".chat-text");
+                textEl.innerHTML = 'Напишите мне напрямую — отвечу на любой вопрос.';
+                scrollIfNeeded(answerEl);
+            });
+        }
+
+        function handleQuestionClick(questionEl) {
+            var questionId = questionEl.getAttribute("data-question-id");
+
+            if (questionId === "other") {
+                if (activeAnswerEl && activeAnswerEl.getAttribute("data-answer-id") === "other") {
+                    collapseAnswer(activeAnswerEl);
+                    activeAnswerEl = null;
+                    activeQuestionEl = null;
+                    return;
+                }
+                if (activeAnswerEl) collapseAnswer(activeAnswerEl);
+                showOtherAnswer(questionEl);
+                activeAnswerEl = findAnswerEl("other");
+                activeQuestionEl = questionEl;
+                return;
+            }
+
+            var item = FAQ_DATA.find(function(it) { return it.id === questionId; });
+            if (!item) return;
+
+            // If clicking the already-active question, collapse it
+            if (activeAnswerEl && activeAnswerEl.getAttribute("data-answer-id") === questionId) {
+                collapseAnswer(activeAnswerEl);
+                activeAnswerEl = null;
+                activeQuestionEl = null;
+                return;
+            }
+
+            // Collapse previous
+            if (activeAnswerEl) {
+                collapseAnswer(activeAnswerEl);
+            }
+
+            // Show new answer
+            showAnswer(questionEl, item);
+            activeAnswerEl = findAnswerEl(questionId);
+            activeQuestionEl = questionEl;
+        }
+
+        // Event delegation on chat
+        chat.addEventListener("click", function(e) {
+            var questionEl = e.target.closest(".chat-bubble.question.is-clickable");
+            if (!questionEl) return;
+            e.preventDefault();
+            handleQuestionClick(questionEl);
+        });
+
+        // Keyboard support
+        chat.addEventListener("keydown", function(e) {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            var questionEl = e.target.closest(".chat-bubble.question.is-clickable");
+            if (!questionEl) return;
+            e.preventDefault();
+            handleQuestionClick(questionEl);
+        });
+    })();
+    </script>
+</section>

@@ -1,0 +1,108 @@
+<section class="screen animation-fade-in">
+    <header class="about-hero">
+        <p class="hero-eyebrow">Backend Developer · Telegram Mini Apps</p>
+        <h1>{{ owner_name }}</h1>
+        <p class="hero-lead">Пишу backend на Python. Делаю Telegram-ботов, веб-приложения и автоматизирую бизнес-процессы.</p>
+        <div class="availability-row">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Открыт к предложениям</span>
+        </div>
+        <div class="hero-actions">
+            <a class="btn" href="/contacts" onclick="event.preventDefault(); window.loadFragment('/contacts')">Связаться</a>
+            <a class="hero-link" href="/cases" onclick="event.preventDefault(); window.loadFragment('/cases')">Смотреть кейсы →</a>
+        </div>
+    </header>
+
+    <div class="about-data">
+    <div class="metric-strip" aria-label="Ключевые факты">
+        <div class="metric-item">
+            <strong>3+ года</strong>
+            <span>коммерческой разработки</span>
+        </div>
+        <div class="metric-item">
+            <strong>Python</strong>
+            <span>FastAPI, Aiogram, SQLAlchemy</span>
+        </div>
+        <div class="metric-item">
+            <strong>Product fit</strong>
+            <span>от задачи до запуска</span>
+        </div>
+    </div>
+
+    <div class="stack-section">
+        <div>
+            <p class="eyebrow">Stack</p>
+            <h2>Навыки и технологии</h2>
+        </div>
+        <div class="stack-list" data-stack-list>
+            {% for tech in tech_stack %}
+            <div class="stack-row" data-stack-row>
+                <div class="stack-row-header">
+                    <div class="stack-row-icon" aria-hidden="true">
+                        <img src="{{ tech.svg_file }}" alt="" width="24" height="24" loading="lazy">
+                    </div>
+                    <span class="stack-row-name">{{ tech.name }}</span>
+                    <svg class="stack-row-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="stack-row-detail">
+                    <div class="stack-detail-section">
+                        <span class="stack-detail-label">Что это</span>
+                        <span class="stack-detail-text">{{ tech.desc }}</span>
+                    </div>
+                    <div class="stack-detail-section">
+                        <span class="stack-detail-label">Как применяю на практике</span>
+                        <span class="stack-detail-text">{{ tech.reason }}</span>
+                    </div>
+                    {% if tech.url %}
+                    <a class="stack-detail-link" href="{{ tech.url }}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Подробнее →</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <script>
+            (function() {
+                var list = document.currentScript.previousElementSibling;
+                list.addEventListener('click', function(e) {
+                    var row = e.target.closest('[data-stack-row]');
+                    if (!row) return;
+                    if (e.target.closest('.stack-detail-link')) return;
+                    var wasExpanded = row.classList.contains('expanded');
+                    list.querySelectorAll('.stack-row.expanded').forEach(function(el) {
+                        if (el !== row) el.classList.remove('expanded');
+                    });
+                    row.classList.toggle('expanded', !wasExpanded);
+                });
+            })();
+        </script>
+    </div>
+    </div>
+
+    <div class="about-pair">
+        <article class="card card-flat">
+            <div>
+                <p class="eyebrow">Обо мне</p>
+                <h2>Что я умею и как работаю</h2>
+            </div>
+            <div class="prose rich-text">{{ about_main | safe }}</div>
+        </article>
+
+        <article class="card card-flat">
+            <div>
+                <p class="eyebrow">Experience</p>
+                <h2>Опыт</h2>
+            </div>
+            {% if experience_intro %}
+            <p class="card-intro">{{ experience_intro }}</p>
+            {% endif %}
+            <div class="timeline">
+                {% for node in experience_timeline %}
+                <div class="timeline-node">
+                    <div class="timeline-title">{{ node.title }}</div>
+                    <div class="timeline-text">{{ node.text }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+</section>

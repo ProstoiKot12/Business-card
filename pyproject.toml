@@ -1,0 +1,46 @@
+[project]
+name = "business-card-bot"
+version = "0.1.0"
+description = "Telegram portfolio bot with Web App, admin panel and server-side calculator"
+requires-python = ">=3.11"
+dependencies = [
+    "aiogram>=3.6,<4.0",
+    "alembic>=1.13,<2.0",
+    "asyncpg>=0.29,<1.0",
+    "fastapi>=0.100,<1.0",
+    "jinja2>=3.1,<4.0",
+    "loguru>=0.7,<1.0",
+    "pydantic-settings>=2.2,<3.0",
+    "psycopg[binary]>=3.1,<4.0",
+    "redis>=5.0,<6.0",
+    "sqlalchemy[asyncio]>=2.0,<3.0",
+    "uvicorn>=0.23,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2,<9.0",
+    "pytest-asyncio>=0.23,<1.0",
+    "ruff>=0.4,<1.0",
+]
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+"app.bot" = ["texts/*.md"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]

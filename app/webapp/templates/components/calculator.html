@@ -1,0 +1,331 @@
+<section class="screen animation-fade-in">
+    <header class="card card-compact">
+        <p class="eyebrow">Project estimate</p>
+        <h1>Расчёт</h1>
+        <p class="lead">4 шага до ориентировочной стоимости вашего проекта.</p>
+    </header>
+
+    <div class="wizard wizard-compact">
+        <nav class="wizard-progress" aria-label="Прогресс">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-labels" id="progress-labels">
+                {% for step in wizard %}
+                    {% if step.id != 'result' %}
+                    <span class="progress-label{% if loop.first %} active{% endif %}" data-step="{{ loop.index0 }}">{{ step.label }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </nav>
+
+        <div class="wizard-steps" id="wizard-steps">
+            <div class="wizard-step active" id="step-content">
+                <div class="step-card step-card-compact">
+                    <span class="step-icon" id="step-icon" aria-hidden="true">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+                    </span>
+                    <h2 class="step-question" id="step-prompt">{{ wizard[0].prompt }}</h2>
+                    <p class="step-hint" id="step-hint">{{ wizard[0].hint }}</p>
+                    <div class="pill-grid" id="step-choices">
+                        {% for choice in wizard[0].choices %}
+                            <button type="button" class="pill-option" data-value="{{ choice.value }}">
+                                <span class="pill-icon">
+                                    {% if choice.value == 'ai' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1v1a3 3 0 0 0 3 3h.5l-1 2"/><circle cx="12" cy="10" r="1"/></svg>
+                                    {% elif choice.value == 'sales' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                    {% elif choice.value == 'mini_app' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+                                    {% elif choice.value == 'crm' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/></svg>
+                                    {% elif choice.value == 'standard' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    {% elif choice.value == 'two_weeks' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                    {% elif choice.value == 'urgent' %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.5-1 .5-2 0-3"/><circle cx="12" cy="12" r="10"/><path d="M8 14c-.5-1-.5-2 0-3"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    {% else %}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    {% endif %}
+                                </span>
+                                <span class="pill-title">{{ choice.title }}</span>
+                            </button>
+                        {% endfor %}
+                    </div>
+                    <div class="pill-grid" id="step-toggles" style="display:none">
+                        <button type="button" class="pill-option pill-yes" data-value="yes">
+                            <span class="pill-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span class="pill-title pill-yes-label">{{ wizard[0].yes_label or 'Да' }}</span>
+                        </button>
+                        <button type="button" class="pill-option pill-no" data-value="no">
+                            <span class="pill-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+                            <span class="pill-title pill-no-label">{{ wizard[0].no_label or 'Нет' }}</span>
+                        </button>
+                    </div>
+                    <output id="result-hero" class="result-hero" style="display:none" aria-live="polite">
+                        <strong class="result-value" id="price-text"></strong>
+                        <div class="result-breakdown" id="result-breakdown"></div>
+                        <small class="result-note">Финальную вилку уточню после ТЗ или короткого созвона.</small>
+                        <button type="button" class="btn btn-accent" id="btn-contact" onclick="window.loadFragment('/contacts')">Написать</button>
+                    </output>
+                </div>
+            </div>
+        </div>
+
+        <div class="wizard-nav">
+            <button type="button" class="btn btn-icon btn-secondary" id="btn-back" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button type="button" class="btn btn-icon" id="btn-next">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    (function() {
+        var currentStepId = "{{ wizard[0].id }}";
+        var currentStepIndex = 0;
+        var totalProgressSteps = {{ wizard|length - 1 }};
+        var wizardData = {};
+        var navigating = false;
+
+        var btnBack = document.getElementById("btn-back");
+        var btnNext = document.getElementById("btn-next");
+        var progressFill = document.getElementById("progress-fill");
+        var progressLabels = document.querySelectorAll(".progress-label");
+        var stepPrompt = document.getElementById("step-prompt");
+        var stepHint = document.getElementById("step-hint");
+        var stepChoices = document.getElementById("step-choices");
+        var stepToggles = document.getElementById("step-toggles");
+        var resultHero = document.getElementById("result-hero");
+        var priceText = document.getElementById("price-text");
+        var resultBreakdown = document.getElementById("result-breakdown");
+        var stepCard = document.querySelector(".step-card");
+        var stepIcon = document.getElementById("step-icon");
+
+        var STEP_ICONS = {
+            bot_type: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>',
+            integrations: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+            admin_panel: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+            deadline: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+            result: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+        };
+
+        var CHOICE_ICONS = {
+            ai: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1v1a3 3 0 0 0 3 3h.5l-1 2"/><circle cx="12" cy="10" r="1"/></svg>',
+            sales: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+            mini_app: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>',
+            crm: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/></svg>',
+            other: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+            standard: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+            two_weeks: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+            urgent: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.5-1 .5-2 0-3"/><circle cx="12" cy="12" r="10"/><path d="M8 14c-.5-1-.5-2 0-3"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        };
+
+        function setStepIcon(stepId) {
+            stepIcon.innerHTML = STEP_ICONS[stepId] || STEP_ICONS.bot_type;
+        }
+
+        function animateStep(fn) {
+            stepCard.classList.add("animating");
+            setTimeout(function() {
+                fn();
+                stepCard.classList.remove("animating");
+            }, 200);
+        }
+
+        function getSelectedValue(container) {
+            var active = container.querySelector(".pill-option.selected");
+            return active ? active.dataset.value : null;
+        }
+
+        function updateProgress(index) {
+            var pct = Math.round((index / (totalProgressSteps - 1)) * 100);
+            progressFill.style.width = pct + "%";
+            progressLabels.forEach(function(label, i) {
+                label.classList.toggle("active", i <= index);
+                label.classList.toggle("done", i < index);
+            });
+        }
+
+        function updateButtons() {
+            btnBack.disabled = currentStepIndex === 0;
+        }
+
+        function renderStep(stepData) {
+            stepPrompt.textContent = stepData.prompt;
+            stepHint.textContent = stepData.hint;
+            setStepIcon(stepData.id);
+
+            var currentValue = wizardData[stepData.field];
+
+            if (stepData.choices) {
+                stepChoices.style.display = "";
+                stepToggles.style.display = "none";
+                resultHero.style.display = "none";
+                stepChoices.innerHTML = stepData.choices.map(function(c) {
+                    var icon = CHOICE_ICONS[c.value] || CHOICE_ICONS.other;
+                    var selectedClass = (currentValue !== undefined && currentValue !== null && String(currentValue) === c.value) ? " selected" : "";
+                    return '<button type="button" class="pill-option' + selectedClass + '" data-value="' + c.value + '"><span class="pill-icon">' + icon + '</span><span class="pill-title">' + c.title + '</span></button>';
+                }).join("");
+            } else {
+                stepChoices.style.display = "none";
+                stepToggles.style.display = "";
+                resultHero.style.display = "none";
+                var yesLabel = stepToggles.querySelector(".pill-yes-label");
+                var noLabel = stepToggles.querySelector(".pill-no-label");
+                if (yesLabel) yesLabel.textContent = stepData.yes_label || "Да";
+                if (noLabel) noLabel.textContent = stepData.no_label || "Нет";
+                stepToggles.querySelectorAll(".pill-option").forEach(function(b) { b.classList.remove("selected"); });
+                if (currentValue === true) {
+                    if (yesLabel) yesLabel.closest(".pill-option").classList.add("selected");
+                } else if (currentValue === false) {
+                    if (noLabel) noLabel.closest(".pill-option").classList.add("selected");
+                }
+            }
+        }
+
+        function renderResult(result, data, breakdown) {
+            stepPrompt.textContent = "Предварительная оценка";
+            stepHint.textContent = "Собранная вилка на основе ваших ответов";
+            setStepIcon("result");
+            stepChoices.style.display = "none";
+            stepToggles.style.display = "none";
+            resultHero.style.display = "";
+
+            var min = result[0];
+            var max = result[1];
+
+            if (min === 0 && max === 0) {
+                priceText.innerHTML = "Индивидуально после обсуждения";
+                resultBreakdown.innerHTML = "";
+            } else {
+                var formatMoney = function(v) { return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽"; };
+                priceText.innerHTML = formatMoney(min) + " —<br>" + formatMoney(max);
+
+                var parts = [];
+                if (breakdown && breakdown.length) {
+                    breakdown.forEach(function(item) {
+                        parts.push('<div class="breakdown-item"><span class="breakdown-label">' + item.label + '</span><span class="breakdown-val">' + item.value + '</span></div>');
+                    });
+                }
+                resultBreakdown.innerHTML = parts.join("");
+            }
+        }
+
+        async function goNext() {
+            if (navigating) return;
+            var value;
+
+            if (stepChoices.style.display !== "none") {
+                value = getSelectedValue(stepChoices);
+                if (!value) return;
+            } else {
+                var yesBtn = stepToggles.querySelector(".pill-yes.selected");
+                var noBtn = stepToggles.querySelector(".pill-no.selected");
+                if (yesBtn) value = true;
+                else if (noBtn) value = false;
+                else return;
+            }
+
+            navigating = true;
+            try {
+                var resp = await fetch("/calculator/step", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({step_id: currentStepId, value: value, data: wizardData})
+                });
+                var result = await resp.json();
+
+                if (result.error) return;
+
+                wizardData = result.data;
+
+                if (result.done) {
+                    updateProgress(totalProgressSteps - 1);
+                    updateButtons();
+                    animateStep(function() { renderResult(result.result, result.data, result.breakdown); });
+                    btnNext.querySelector("svg").outerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>';
+                    btnNext.classList.add("btn-accent");
+                } else {
+                    currentStepIndex++;
+                    currentStepId = result.step.id;
+                    updateProgress(currentStepIndex);
+                    updateButtons();
+                    animateStep(function() { renderStep(result.step); });
+                }
+            } finally {
+                navigating = false;
+            }
+        }
+
+        async function goBack() {
+            if (navigating) return;
+            navigating = true;
+            try {
+                var resp = await fetch("/calculator/step", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({step_id: "back", current_step: currentStepId, data: wizardData})
+                });
+                var result = await resp.json();
+
+                if (result.error) return;
+
+                wizardData = result.data;
+                currentStepIndex--;
+                currentStepId = result.step.id;
+                updateProgress(currentStepIndex);
+                updateButtons();
+                animateStep(function() { renderStep(result.step); });
+                resultHero.style.display = "none";
+                btnNext.querySelector("svg").outerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+                btnNext.classList.remove("btn-accent");
+            } finally {
+                navigating = false;
+            }
+        }
+
+        // Pill selection → toggle + auto-advance
+        stepChoices.addEventListener("click", function(e) {
+            var pill = e.target.closest(".pill-option");
+            if (!pill) return;
+            if (pill.classList.contains("selected")) {
+                pill.classList.remove("selected");
+                return;
+            }
+            stepChoices.querySelectorAll(".pill-option").forEach(function(p) { p.classList.remove("selected"); });
+            pill.classList.add("selected");
+            goNext();
+        });
+
+        stepToggles.addEventListener("click", function(e) {
+            var pill = e.target.closest(".pill-option");
+            if (!pill) return;
+            if (pill.classList.contains("selected")) {
+                pill.classList.remove("selected");
+                return;
+            }
+            stepToggles.querySelectorAll(".pill-option").forEach(function(p) { p.classList.remove("selected"); });
+            pill.classList.add("selected");
+            goNext();
+        });
+
+        btnNext.onclick = function() {
+            if (resultHero.style.display !== "none") {
+                // Reset calculator
+                currentStepIndex = 0;
+                currentStepId = "{{ wizard[0].id }}";
+                wizardData = {};
+                resultHero.style.display = "none";
+                btnNext.querySelector("svg").outerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+                btnNext.classList.remove("btn-accent");
+                updateProgress(0);
+                updateButtons();
+                renderStep({{ wizard[0] | tojson }});
+            } else {
+                goNext();
+            }
+        };
+
+        btnBack.onclick = goBack;
+
+        updateProgress(0);
+        updateButtons();
+    })();
+</script>
