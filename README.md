@@ -1,7 +1,7 @@
 <h1 align="center">📱 Business Card</h1>
 
 <p align="center">
-<strong>Telegram-бот-портфолио с Web App, админ-панелью и серверным калькулятором стоимости</strong>
+<strong>Telegram-бот-портфолио с Web App, админ-панелью и калькулятором стоимости</strong>
 </p>
 
 <p align="center">
