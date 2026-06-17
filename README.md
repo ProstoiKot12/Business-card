@@ -1,8 +1,12 @@
-# 💼 BUSINESS CARD BOT
+<h1 align="center">BUSINESS CARD BOT</h1>
 
-**Telegram-бот-портфолио с Web App, админ-панелью и серверным калькулятором стоимости**
+<p align="center">
+<strong>Telegram-бот-портфолио с Web App, админ-панелью и серверным калькулятором стоимости</strong>
+</p>
 
-> Бот-визитка + Telegram Web App в одном процессе. Кейсы, калькулятор стоимости, FAQ и контакты — всё управляется из Telegram.
+<p align="center">
+Бот-визитка + Telegram Web App в одном процессе. Кейсы, калькулятор стоимости, FAQ и контакты — всё управляется из Telegram.
+</p>
 
 ---
 
