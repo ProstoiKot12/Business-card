@@ -15,28 +15,74 @@ down_revision: str | None = "0002_rename_case_fields"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
-cases_table = sa.table(
-    "cases",
-    sa.column("order", sa.Integer),
-    sa.column("emoji", sa.String),
-    sa.column("title", sa.String),
-    sa.column("type", sa.String),
-    sa.column("task", sa.Text),
-    sa.column("context", sa.String),
-    sa.column("approach", sa.Text),
-    sa.column("outcome", sa.Text),
-    sa.column("stack", sa.Text),
-    sa.column("media_group", sa.Text),
-    sa.column("bot_link", sa.String),
-    sa.column("extra_link", sa.String),
-    sa.column("is_visible", sa.Boolean),
+_INSERT_SQL = sa.text(
+    """INSERT INTO cases (
+        "order", emoji, title, type, task, context, approach, outcome,
+        stack, media_group, bot_link, extra_link, is_visible
+    ) VALUES (
+        :order, :emoji, :title, :type, :task, :context, :approach, :outcome,
+        CAST(:stack AS jsonb), CAST(:media_group AS jsonb), :bot_link, :extra_link, :is_visible
+    )"""
 )
+
+CASES = [
+    {
+        "order": 1,
+        "emoji": "📦",
+        "title": "Upseller",
+        "type": "Бот-платформа",
+        "task": (
+            "Построить единую систему управления складом: от приёмки до отгрузки,"
+            " с контролем менеджеров, SLA по клиентским чатам и автоматическими отчётами."
+        ),
+        "context": "для логистической компании",
+        "approach": (
+            "Ролевые сценарии для админа, менеджера и логиста\n"
+            "Учёт приёмки, сборки, упаковки и отгрузки\n"
+            "Контроль SLA в клиентских чатах с напоминаниями\n"
+            "Интеграция с Google Sheets и Trello\n"
+            "Автоматические отчёты и квартальные опросы клиентов"
+        ),
+        "outcome": "Менеджеры видят задачи в Telegram, руководство получает ежедневную аналитику автоматически.",
+        "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","APScheduler","Google Sheets API","Trello API","Git"]',
+        "media_group": "[]",
+        "bot_link": None,
+        "extra_link": "https://github.com/ProstoiKot12/Upseller-Bot",
+        "is_visible": True,
+    },
+    {
+        "order": 2,
+        "emoji": "🔧",
+        "title": "Montazhp",
+        "type": "Бот-сервис",
+        "task": (
+            "Автоматизировать весь цикл, от заявки до выезда мастера и оплаты:"
+            " расчёт стоимости, бронирование, оплата, геолокация и CRM."
+        ),
+        "context": "для сервиса монтажа в СПб",
+        "approach": (
+            "Оформление заявки с расчётом цены и AI-консультантом\n"
+            "Онлайн-запись на свободную дату с предоплатой\n"
+            "Кабинет мастера: заказы, график, фото отчёты, live-геолокация\n"
+            "Синхронизация с AmoCRM, приём платежей T-Bank / YooKassa\n"
+            "Админ-дашборд, рассылки и ежедневная отчётность"
+        ),
+        "outcome": (
+            "За полтора года в production: 1700+ заказов."
+            " Клиент оформляет заявку и оплачивает сам, мастер ведёт работу через Telegram."
+        ),
+        "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","Docker","AmoCRM API","YooKassa","T-Bank","Yandex Maps","Yandex GPT","Google Calendar","Git"]',
+        "media_group": "[]",
+        "bot_link": "https://t.me/montazhpbot",
+        "extra_link": "https://github.com/ProstoiKot12/MontazhP",
+        "is_visible": True,
+    },
+]
 
 
 def upgrade() -> None:
     conn = op.get_bind()
 
-    # Idempotent: skip if a case with this extra_link already exists
     existing = conn.execute(
         sa.text("SELECT extra_link FROM cases WHERE extra_link IN (:a, :b)"),
         {
@@ -48,62 +94,12 @@ def upgrade() -> None:
 
     max_order = conn.execute(sa.text("SELECT COALESCE(MAX(\"order\"), 0) FROM cases")).scalar()
 
-    new_cases = []
-
-    if "https://github.com/ProstoiKot12/Upseller-Bot" not in existing_links:
+    for case in CASES:
+        if case["extra_link"] in existing_links:
+            continue
         max_order += 1
-        new_cases.append(
-            {
-                "order": max_order,
-                "emoji": "📦",
-                "title": "Upseller",
-                "type": "Бот-платформа",
-                "task": "Построить единую систему управления складом: от приёмки до отгрузки, с контролем менеджеров, SLA по клиентским чатам и автоматическими отчётами.",
-                "context": "для логистической компании",
-                "approach": (
-                    "Ролевые сценарии для админа, менеджера и логиста\n"
-                    "Учёт приёмки, сборки, упаковки и отгрузки\n"
-                    "Контроль SLA в клиентских чатах с напоминаниями\n"
-                    "Интеграция с Google Sheets и Trello\n"
-                    "Автоматические отчёты и квартальные опросы клиентов"
-                ),
-                "outcome": "Менеджеры видят задачи в Telegram, руководство получает ежедневную аналитику автоматически.",
-                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","APScheduler","Google Sheets API","Trello API", "Git"]',
-                "media_group": "[]",
-                "bot_link": None,
-                "extra_link": "https://github.com/ProstoiKot12/Upseller-Bot",
-                "is_visible": True,
-            }
-        )
-
-    if "https://github.com/ProstoiKot12/MontazhP" not in existing_links:
-        max_order += 1
-        new_cases.append(
-            {
-                "order": max_order,
-                "emoji": "🔧",
-                "title": "Montazhp",
-                "type": "Бот-сервис",
-                "task": "Автоматизировать весь цикл, от заявки до выезда мастера и оплаты: расчёт стоимости, бронирование, оплата, геолокация и CRM.",
-                "context": "для сервиса монтажа в СПб",
-                "approach": (
-                    "Оформление заявки с расчётом цены и AI-консультантом\n"
-                    "Онлайн-запись на свободную дату с предоплатой\n"
-                    "Кабинет мастера: заказы, график, фото отчёты, live-геолокация\n"
-                    "Синхронизация с AmoCRM, приём платежей T-Bank / YooKassa\n"
-                    "Админ-дашборд, рассылки и ежедневная отчётность"
-                ),
-                "outcome": "За полтора года в production: 1700+ заказов. Клиент оформляет заявку и оплачивает сам, мастер ведёт работу через Telegram.",
-                "stack": '["Python","Aiogram","SQLAlchemy","PostgreSQL","Redis","Docker","AmoCRM API","YooKassa","T-Bank","Yandex Maps","Yandex GPT","Google Calendar", "Git"]',
-                "media_group": "[]",
-                "bot_link": "https://t.me/montazhpbot",
-                "extra_link": "https://github.com/ProstoiKot12/MontazhP",
-                "is_visible": True,
-            }
-        )
-
-    if new_cases:
-        op.bulk_insert(cases_table, new_cases)
+        params = {**case, "order": max_order}
+        conn.execute(_INSERT_SQL, params)
 
 
 def downgrade() -> None:
