@@ -105,8 +105,6 @@ async def cases(request: Request, session: AsyncSession = Depends(get_session)):
         "Docker Compose": "/static/icons/tech/dockercompose.svg",
         "Git": "https://cdn.jsdelivr.net/npm/devicon@2/icons/git/git-original.svg",
         "SQLAlchemy": "https://cdn.jsdelivr.net/npm/devicon@2/icons/sqlalchemy/sqlalchemy-original.svg",
-        "HTML": "https://cdn.jsdelivr.net/npm/devicon@2/icons/html5/html5-original.svg",
-        "CSS": "https://cdn.jsdelivr.net/npm/devicon@2/icons/css3/css3-original.svg",
         # local — official + custom colored SVGs
         "Aiogram": "/static/icons/tech/aiogram.svg",
         "Trello API": "/static/icons/tech/trello.svg",

@@ -1,21 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="dc-whale" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2496ED"/>
-      <stop offset="100%" stop-color="#1A6DB5"/>
-    </linearGradient>
-  </defs>
-  <!-- Whale body -->
-  <path d="M58 28c-1.2-0.8-4-1.6-6-1.2-0.4-2.4-2-4.4-4-5.6l-0.8-0.4-0.4 0.8c-0.8 1.6-1.2 3.6-0.8 5.2-0.4 0.4-1.2 0.8-1.6 1.2-1.6 1.2-2.4 2.8-2.4 4.8 0 2 0.8 3.6 2 4.8H8c-1.2 0-2 0.8-2 2s0.8 2 2 2h38c3.6 0 6.8-2 8.4-5.2 1.2 0 3.2-0.4 4.8-2 0.4-0.4 0-0.8-0.4-0.8-2.4 0.8-4.8 0.4-6-0.4 2-1.6 4-4.4 5.2-6.4z" fill="url(#dc-whale)"/>
-  <!-- Containers -->
-  <rect x="12" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="19" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="26" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="33" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="19" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="26" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="33" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <rect x="26" y="8" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
-  <!-- Eye -->
-  <circle cx="52" cy="26" r="1" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240">
+  <!-- Main whale body -->
+  <g transform="translate(0, 20)">
+    <!-- Containers (boxes) -->
+    <rect x="104" y="22" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="176" y="22" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="248" y="22" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="176" y="-38" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="248" y="-38" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="320" y="-38" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="248" y="-98" width="60" height="56" rx="4" fill="#2496ED"/>
+    <rect x="320" y="-98" width="60" height="56" rx="4" fill="#2496ED"/>
+    <!-- Whale body -->
+    <path d="M490 30c0 0-19-17-51-17s-51 24-51 24l-8 72c-4 0-5 7-5 7l-2 17h-73c0 36 26 43 26 43h226s21 0 33-20c10-11 27-32 52-32 27 0 37 11 37 11 10-4 16-16 29-27-13-13-23-5-32 2-22 18-29 10-35 5-55-42-93-62-145-62-14 0-21 1-21 1l-10-61z" fill="#2496ED"/>
+    <!-- Eye -->
+    <circle cx="548" cy="12" r="6" fill="#fff"/>
+    <circle cx="550" cy="11" r="3" fill="#1A6DB5"/>
+  </g>
+  <!-- "Compose" text -->
+  <text x="400" y="210" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700" fill="#384D54" text-anchor="middle">Compose</text>
 </svg>
