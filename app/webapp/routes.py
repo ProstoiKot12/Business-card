@@ -107,6 +107,13 @@ async def cases(request: Request, session: AsyncSession = Depends(get_session)):
         "SQLAlchemy": "https://cdn.jsdelivr.net/npm/devicon@2/icons/sqlalchemy/sqlalchemy-original.svg",
         # local — official + custom colored SVGs
         "Aiogram": "/static/icons/tech/aiogram.svg",
+        "Celery": "/static/icons/tech/celery.svg",
+        "Dramatiq": "/static/icons/tech/dramatiq.svg",
+        "RabbitMQ": "/static/icons/tech/rabbitmq.svg",
+        "AI": "/static/icons/tech/ai.svg",
+        "HTML": "/static/icons/tech/html.svg",
+        "CSS": "/static/icons/tech/css.svg",
+        "APScheduler": "/static/icons/tech/apscheduler.svg",
         "Trello API": "/static/icons/tech/trello.svg",
         "Google Sheets API": "/static/icons/tech/googlesheets.svg",
         "Google Calendar": "/static/icons/tech/googlecalendar.svg",
@@ -115,7 +122,6 @@ async def cases(request: Request, session: AsyncSession = Depends(get_session)):
         "AmoCRM API": "/static/icons/tech/amocrm.svg",
         "YooKassa": "/static/icons/tech/yookassa.png",
         "T-Bank": "/static/icons/tech/tbank.svg",
-        "APScheduler": "/static/icons/tech/apscheduler.svg",
         "Jinja2": "/static/icons/tech/jinja2.svg",
         "Alembic": "/static/icons/tech/alembic.svg",
     }
