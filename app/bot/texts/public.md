@@ -693,6 +693,36 @@ Alembic
 ## tech.Alembic.url
 https://alembic.sqlalchemy.org/
 
+## tech.HTML.name
+HTML
+
+## tech.HTML.emoji
+🌐
+
+## tech.HTML.desc
+Язык разметки веб-страниц — структурная основа любого сайта.
+
+## tech.HTML.reason
+Верстаю семантичные страницы для Web App и лендингов.
+
+## tech.HTML.url
+https://developer.mozilla.org/en-US/docs/Web/HTML
+
+## tech.CSS.name
+CSS
+
+## tech.CSS.emoji
+🎨
+
+## tech.CSS.desc
+Язык стилей для оформления веб-интерфейсов.
+
+## tech.CSS.reason
+Стилизую Web App страницы: адаптивная вёрстка, анимации, кастомные темы.
+
+## tech.CSS.url
+https://developer.mozilla.org/en-US/docs/Web/CSS
+
 ## tech.default.emoji
 ⚙️
 

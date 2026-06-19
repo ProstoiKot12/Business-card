@@ -39,6 +39,8 @@ TECH_KEYS = {
     "Google Calendar": "Google Calendar",
     "Jinja2": "Jinja2",
     "Alembic": "Alembic",
+    "HTML": "HTML",
+    "CSS": "CSS",
 }
 
 # Icon file extensions: most are .svg, a few are .png (official logo)
@@ -101,5 +103,7 @@ FEATURED_TECH_STACK = (
     "Docker Compose",
     "RabbitMQ",
     "Git",
+    "HTML",
+    "CSS",
     "AI",
 )
