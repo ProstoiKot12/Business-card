@@ -468,20 +468,20 @@ Dramatiq
 ## tech.Dramatiq.url
 https://dramatiq.io/
 
-## tech.Kubernetes.name
-Kubernetes
+## tech.DockerCompose.name
+Docker Compose
 
-## tech.Kubernetes.emoji
-☸️
+## tech.DockerCompose.emoji
+🐳
 
-## tech.Kubernetes.desc
-Оркестратор контейнеров для HighLoad.
+## tech.DockerCompose.desc
+Описание и оркестрация мультиконтейнерных Docker-приложений.
 
-## tech.Kubernetes.reason
-Понимаю поды, деплойменты и балансировку нагрузки.
+## tech.DockerCompose.reason
+Настраиваю многосервисные стеки (PostgreSQL, Redis, бот) в одном файле.
 
-## tech.Kubernetes.url
-https://kubernetes.io/
+## tech.DockerCompose.url
+https://docs.docker.com/compose/
 
 ## tech.RabbitMQ.name
 RabbitMQ

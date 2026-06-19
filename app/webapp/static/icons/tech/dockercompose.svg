@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="dc-whale" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2496ED"/>
+      <stop offset="100%" stop-color="#1A6DB5"/>
+    </linearGradient>
+  </defs>
+  <!-- Whale body -->
+  <path d="M58 28c-1.2-0.8-4-1.6-6-1.2-0.4-2.4-2-4.4-4-5.6l-0.8-0.4-0.4 0.8c-0.8 1.6-1.2 3.6-0.8 5.2-0.4 0.4-1.2 0.8-1.6 1.2-1.6 1.2-2.4 2.8-2.4 4.8 0 2 0.8 3.6 2 4.8H8c-1.2 0-2 0.8-2 2s0.8 2 2 2h38c3.6 0 6.8-2 8.4-5.2 1.2 0 3.2-0.4 4.8-2 0.4-0.4 0-0.8-0.4-0.8-2.4 0.8-4.8 0.4-6-0.4 2-1.6 4-4.4 5.2-6.4z" fill="url(#dc-whale)"/>
+  <!-- Containers -->
+  <rect x="12" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="19" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="26" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="33" y="22" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="19" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="26" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="33" y="15" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <rect x="26" y="8" width="5" height="5" rx="0.5" fill="#2496ED" stroke="#fff" stroke-width="0.5"/>
+  <!-- Eye -->
+  <circle cx="52" cy="26" r="1" fill="#fff"/>
+</svg>

@@ -102,7 +102,7 @@ async def cases(request: Request, session: AsyncSession = Depends(get_session)):
         "Docker": "https://cdn.jsdelivr.net/npm/devicon@2/icons/docker/docker-original.svg",
         "FastAPI": "https://cdn.jsdelivr.net/npm/devicon@2/icons/fastapi/fastapi-original.svg",
         "Django": "https://cdn.jsdelivr.net/npm/devicon@2/icons/django/django-plain.svg",
-        "Kubernetes": "https://cdn.jsdelivr.net/npm/devicon@2/icons/kubernetes/kubernetes-original.svg",
+        "Docker Compose": "/static/icons/tech/dockercompose.svg",
         "Git": "https://cdn.jsdelivr.net/npm/devicon@2/icons/git/git-original.svg",
         "SQLAlchemy": "https://cdn.jsdelivr.net/npm/devicon@2/icons/sqlalchemy/sqlalchemy-original.svg",
         # local — official + custom colored SVGs
