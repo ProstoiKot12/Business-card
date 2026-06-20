@@ -1,13 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs>
-    <linearGradient id="dram-grad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7C5CFC"/>
-      <stop offset="100%" stop-color="#4A3FBF"/>
+    <linearGradient id="dram-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF5A5F"/>
+      <stop offset="100%" stop-color="#C81D25"/>
+    </linearGradient>
+    <linearGradient id="dram-grad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4A3FBF"/>
+      <stop offset="100%" stop-color="#2D238A"/>
     </linearGradient>
   </defs>
-  <rect x="16" y="12" width="96" height="104" rx="16" fill="url(#dram-grad)"/>
-  <rect x="34" y="34" width="60" height="14" rx="7" fill="#fff" opacity="0.95"/>
-  <rect x="34" y="57" width="60" height="14" rx="7" fill="#fff" opacity="0.95"/>
-  <rect x="34" y="80" width="60" height="14" rx="7" fill="#fff" opacity="0.95"/>
-  <path d="M45 41H83M45 64H83M45 87H60" stroke="#4A3FBF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <!-- Base background (optional but good for consistency) -->
+  <rect x="0" y="0" width="128" height="128" rx="24" fill="url(#dram-grad2)"/>
+  
+  <!-- Comedy Mask -->
+  <path d="M45 35 C30 35, 20 45, 20 60 C20 80, 45 100, 45 100 C45 100, 70 80, 70 60 C70 45, 60 35, 45 35 Z" fill="#FFF" stroke="#FF5A5F" stroke-width="3"/>
+  <circle cx="35" cy="55" r="5" fill="#2D238A"/>
+  <circle cx="55" cy="55" r="5" fill="#2D238A"/>
+  <path d="M35 75 Q45 85, 55 75" fill="none" stroke="#2D238A" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Tragedy Mask (offset behind) -->
+  <path d="M83 25 C68 25, 58 35, 58 50 C58 70, 83 90, 83 90 C83 90, 108 70, 108 50 C108 35, 98 25, 83 25 Z" fill="#E0E0E0" stroke="#C81D25" stroke-width="3"/>
+  <circle cx="73" cy="45" r="5" fill="#2D238A"/>
+  <circle cx="93" cy="45" r="5" fill="#2D238A"/>
+  <path d="M73 65 Q83 55, 93 65" fill="none" stroke="#2D238A" stroke-width="4" stroke-linecap="round"/>
 </svg>
