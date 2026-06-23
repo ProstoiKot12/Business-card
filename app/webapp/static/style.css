@@ -638,8 +638,6 @@ h2 {
     width: 24px;
     height: 24px;
     opacity: 0.9;
-    outline: 1px solid rgba(255, 255, 255, 0.1);
-    outline-offset: -1px;
     border-radius: 4px;
     transition: transform 250ms ease, opacity 250ms ease;
 }
